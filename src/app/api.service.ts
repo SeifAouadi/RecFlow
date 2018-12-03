@@ -11,4 +11,8 @@ export class ApiService {
   loginApi(form) {
     return this.http.post('http://localhost:3000/login', form);
   }
+
+  registerApi(data) {
+    return this.http.post('http://localhost:3000/register', data);
+  }
 }
