@@ -56,14 +56,14 @@ function handleValidationError(err, body) {
     }
   }
 }
-app.post('/login', async(req, res) => {
-  const resultlogin = await userModel.findOne({
-      email: req.body.email
-  });
-  if(!resultlogin) {res.send({message: 'user not found'})}
-  console.log(result , req.body.password)
-  if(result.password !== req.body.password) {res.send({message:'bad password'})
-}
+  app.post('/login', async (req, res) => {
+    resultLogin = await Candidat.findOne({email: req.body.email});
+    if (!resultLogin) {
+        res.send({message: 'user not found'});
+    }
+    if (!bcrypt.compareSync(req.body.password, resultLogin.password)) {
+        res.send({message: 'bad password'})
+    }
 else { res.send({message:'ok'})}
 });
 
