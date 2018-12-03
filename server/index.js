@@ -6,6 +6,7 @@ var ConsultantModel = mongoose.model('consultant', Consultant);
 
 const port = process.env.port || 3000;
 var Candidat = require('./models/Candidat');
+var Company = require('./models/Company');
 const bcrypt = require('bcrypt');
 var cors = require('cors');
 const app = express();
@@ -80,6 +81,34 @@ function handleValidationError(err, body) {
         res.send({message: 'bad password'})
     }
 else { res.send({message:'ok'})}
+});
+
+app.post('/newcompany', async (req, res) => {
+  var company = new Company();
+  company.name = req.body.name;
+  company.description = req.body.description;
+  company.address = req.body.address;
+  company.phone = req.body.phone;
+  company.postalCode = req.body.postalCode;
+  company.pathPhoto = req.body.pathPhoto;
+  company.socialLinks.facebook = req.body.facebook;
+  company.socialLinks.twitter = req.body.twitter;
+  company.socialLinks.linkedin = req.body.linkedin;
+  company.email = req.body.emailValue;
+  resultRegister = await Company.findOne({email: req.body.email});
+  if (!resultRegister) {
+    company.email = req.body.email;
+    company.save((err, doc) => {
+      if (!err) {
+        res.send({success: "Your company is successfully added", status: 200});
+      } else {
+        console.log("there is an error while adding user in DB:" + err);
+        res.send({success: "failed to add new user", status: 500});
+      }
+    })
+  } else {
+    res.send({success: "Email already used !!!", status: 500})
+  }
 });
 
 
