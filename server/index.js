@@ -56,6 +56,17 @@ function handleValidationError(err, body) {
     }
   }
 }
+app.post('/login', async(req, res) => {
+  const resultlogin = await userModel.findOne({
+      email: req.body.email
+  });
+  if(!resultlogin) {res.send({message: 'user not found'})}
+  console.log(result , req.body.password)
+  if(result.password !== req.body.password) {res.send({message:'bad password'})
+}
+else { res.send({message:'ok'})}
+});
+
 
 app.listen(port, function (err, response) {
   console.log('started at port number : ', port);
