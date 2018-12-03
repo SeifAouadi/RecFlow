@@ -15,4 +15,7 @@ export class ApiService {
   registerApi(data) {
     return this.http.post('http://localhost:3000/register', data);
   }
+  formConsultant(data) {
+    return this.http.post('http://localhost:3000/consultant', data);
+  }
 }
