@@ -15,8 +15,8 @@ export class CompanyComponent implements OnInit {
     this.company = this.fb.group({
       Nom: ['', [Validators.required, Validators.minLength(1)]],
       email: ['', [Validators.required, Validators.minLength(1)]],
-      description: ['', [Validators.required, Validators.minLength(1)]],
-      adresse: ['', [Validators.required, Validators.minLength(1)]],
+      Description: ['', [Validators.required, Validators.minLength(1)]],
+      Adresse: ['', [Validators.required, Validators.minLength(1)]],
       phone: ['', [Validators.required, Validators.minLength(1)]],
       facebook: ['', [Validators.required, Validators.minLength(1)]],
       tweeter: ['', [Validators.required, Validators.minLength(1)]],
@@ -26,14 +26,15 @@ export class CompanyComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
-  form(f) {
+  formCompany(f) {
     if (f.valid) {
       this.test = {
         Nom: f.value.Nom,
         email: f.value.email,
         description: f.value.Description,
-        adresse: f.value.adresse,
+        adresse: f.value.Adresse,
         phone: f.value.phone,
         socialLinks: [{
           facebook: f.value.facebook,
@@ -42,6 +43,7 @@ export class CompanyComponent implements OnInit {
         }]
 
       };
+      console.log(this.test);
       this.apiService.formCompany(this.test).subscribe(res => {
         console.log(res);
       });

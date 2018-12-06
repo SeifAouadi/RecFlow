@@ -1,0 +1,12 @@
+
+h2{
+  color: #DE6262!important;
+}
+h4{
+  text-align: center;
+  margin-top: 20px;
+}
+.center_div{
+  margin: 0 auto;
+  width:40% ;/* value of your choice which suits your alignment */
+}
