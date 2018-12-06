@@ -1,0 +1,23 @@
+
+<form class="form-group" [formGroup]="company">
+
+<h2>Nom de la société</h2>
+<input type="text" formControlName="Nom" placeholder="Nom de la société">
+<h2>adresse email</h2>
+<input type="text" formControlName="email" placeholder="email">
+<h2>Description</h2>
+<input type="text" formControlName="description" placeholder="Description">
+<h2>adresse de la société</h2>
+<input type="text" formControlName="adresse" placeholder="adresse de la société">
+<h2>Numéro de télephone</h2>
+<input type="number" formControlName="phone" placeholder="numéro de téléphone">
+<h2>link Facebook</h2>
+<input type="text" formControlName="facebook" placeholder="lien facebook">
+<h2>lien Tweeter</h2>
+<input type="text" formControlName="tweeter" placeholder="lien tweeter">
+<h2>lien LinkedIn</h2>
+<input type="text" formControlName="linkedin" placeholder="lien linkedin">
+<button type="button" (click)="form(company)">Edit</button>
+</form>
+
+

@@ -18,4 +18,7 @@ export class ApiService {
   formConsultant(data) {
     return this.http.post('http://localhost:3000/consultant', data);
   }
+  formCompany(data) {
+    return this.http.post('http://localhost:3000/company', data);
+  }
 }
