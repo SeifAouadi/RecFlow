@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { from } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Http } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-consultant',
   templateUrl: './consultant.component.html',
   styleUrls: ['./consultant.component.css']
 })
 export class ConsultantComponent implements OnInit {
-  imageUser: File = null;
+  imageUser;
+  experience: FormArray;
+  formation: FormArray;
+  fileUpload: Array<File> = [];
   consultant: FormGroup;
   test: any;
   dureeExperience;
@@ -17,53 +21,74 @@ export class ConsultantComponent implements OnInit {
   adresse;
   skill;
   groupCV;
-  constructor(public apiService: ApiService, public fb: FormBuilder) {
-    this.consultant = this.fb.group({
-      societe: ['', [Validators.required, Validators.minLength(1)]],
-      debut: ['', [Validators.required, Validators.minLength(1)]],
-      fin: ['', [Validators.required, Validators.minLength(1)]],
-      tacheRealises: ['', [Validators.required, Validators.minLength(1)]],
-      institut: ['', [Validators.required, Validators.minLength(1)]],
-      diplome: ['', [Validators.required, Validators.minLength(1)]],
-      debutF: ['', [Validators.required, Validators.minLength(1)]],
-      finF: ['', [Validators.required, Validators.minLength(1)]],
-      phone: ['', [Validators.required, Validators.minLength(1)]],
-      adresse: ['', [Validators.required, Validators.minLength(1)]],
-      skill: ['', [Validators.required, Validators.minLength(1)]],
-      dureeExperience: ['', [Validators.required, Validators.minLength(1)]],
-
+  constructor(public apiService: ApiService) {
+    this.consultant = new FormGroup({
+      experience: new FormArray([this.createExp()]),
+      formation: new FormArray([this.createFormation()]),
+      phone: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      adresse: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      skill: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      dureeExperience: new FormControl('', [Validators.required, Validators.minLength(1)])
     });
   }
 
-  ngOnInit() {
+    ngOnInit() {
+  }
+  createExp(): FormGroup {
+    return new FormGroup({
+      societe: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      debut: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      fin: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      tacheRealises: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    });
+  }
+  createFormation(): FormGroup {
+    return new FormGroup({
+        institut: new FormControl('', [Validators.required, Validators.minLength(1)]),
+        diplome: new FormControl('', [Validators.required, Validators.minLength(1)]),
+        debutF: new FormControl('', [Validators.required, Validators.minLength(1)]),
+        finF: new FormControl('', [Validators.required, Validators.minLength(1)])
+    });
+
+  }
+  addExp(): void {
+this.experience = this.consultant.get('experience') as FormArray;
+this.experience.push(this.createExp());
+
+
+  }
+  addFormation(): void {
+    this.formation = this.consultant.get('formation') as FormArray;
+    this.formation.push(this.createFormation());
   }
   form(f) {
     if (f.valid) {
       this.test = {
-        dureeExprience: f.value.dureeExperience,
-
-        experience: [{
-          societe: f.value.societe,
-          debut: f.value.debut,
-          fin: f.value.fin,
-          tacheRealises: f.value.tacheRealises,
-        }],
-        formation: [{
-          institut: f.value.institut,
-          diplome: f.value.diplome,
-          debutF: f.value.debutF,
-          finF: f.value.finF
-        }],
-        skill: [{
-          technologie: f.value.skill
-        }],
+        dureeExperience: f.value.dureeExperience,
+        experience: f.value.experience,
+        formation: f.value.formation,
         phone: f.value.phone,
-        adresse: f.value.adresse
+        adresse: f.value.adresse,
+        imagePath: this.imageUser
+
       };
       this.apiService.formConsultant(this.test).subscribe(res => {
         console.log(res);
       });
     }
   }
+
+  filechangeEvent(fileInput: any) {
+    this.fileUpload = <Array<File>>fileInput.target.files;
+  }
+  uploadFile() {
+    const fba = new FormData();
+    fba.append('file', this.fileUpload[0]);
+ this.apiService.uploadfile(fba).subscribe(res => {
+console.log(res);
+    });
 }
+}
+
+
 

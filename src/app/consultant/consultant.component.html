@@ -1,11 +1,11 @@
-<p>
-  consultant works!
-</p>
-<form class="form-group" [formGroup]="consultant" >
+
+<form class="form-group"  [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
   <h1> Durée Experiance</h1>
   <input type="number" formControlName="dureeExperience">
+  <div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
 <h1>Experience</h1>
 <h2>Societe :</h2>
+<div [formGroupName]="i">
 <input class="form-control" formControlName="societe" type="text" placeholder="Societe">
 <h2>Debut Experience :</h2>
 <input class="form-control" formControlName="debut" type="date" placeholder="debut Experience">
@@ -13,8 +13,13 @@
 <input class="form-control" formControlName="fin" type="date" placeholder="Fin Experience">
 <h2>Tache realiser</h2>
 <input class="form-control" formControlName="tacheRealises" type="text" placeholder="tacheRealiser">
+</div>
+</div>
+<button type="button" (click)="addExp()">+++</button>
+<div formArrayName="formation" *ngFor="let for of consultant.get('formation').controls; let i = index">
 <h1>Formation</h1>
 <h2>Institut</h2>
+<div [formGroupName]="i">
 <input type="text" formControlName="institut" placeholder="Institut" class="form-control">
 <h2>Diplome</h2>
 <input type="text" formControlName="diplome" placeholder="Diplome" class="form-control">
@@ -22,10 +27,14 @@
 <input type="date" placeholder="debut Formation" class="form-control" formControlName="debutF">
 <h2>Fin Formation</h2>
 <input type="date" placeholder="Fin formation" class="form-control" formControlName="finF">
+</div>
+</div>
+<button type="button" (click)="addFormation()">++++</button>
 <h2>Phone :</h2>
 <input type="tel" placeholder="Phone" formControlName="phone" >
 <h2>Adresse:</h2>
 <input type="text" placeholder="Adresse" formControlName="adresse">
 <input type="text" placeholder="Skill" formControlName="skill">
-<button type="button" (click)="form(consultant)">get</button>
+<button type="button" (click)="form(consultant);uploadFile()">get</button>
 </form>
+<input type="file" [(ngModel)]="imageUser" (change)="filechangeEvent($event)">

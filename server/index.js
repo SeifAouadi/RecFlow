@@ -3,15 +3,27 @@ var mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 var Consultant = require('./models/Consultant');
 var ConsultantModel = mongoose.model('consultant', Consultant);
-
+var multer  = require('multer')
 const port = process.env.port || 3000;
 var Candidat = require('./models/Candidat');
 var Company = require('./models/Company');
 const bcrypt = require('bcrypt');
 var cors = require('cors');
+const IncomingForm = require('formidable').IncomingForm;
+var form = new IncomingForm();
 const app = express();
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, './imageUser/')
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.originalname);
+  }
+});
 
-
+var upload = multer({
+  storage: storage
+});
 var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -25,8 +37,12 @@ var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
 app.use(cors());
 app.use(bodyParser.json());
 
+ app.post('/upload', upload.single('file'), function (req, res, next) {
+res.send(req.file)
+  });
+
 app.post('/consultant' , async (req,res) => {
-  var consultant = new ConsultantModel(req.body);
+ var consultant = new ConsultantModel(req.body);
   console.log(consultant);
 
   consultant.save();
