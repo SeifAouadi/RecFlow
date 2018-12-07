@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     this.message = '';
     this.apiService.loginApi(myObj).subscribe(res => {
       console.log(res);
-       if (res['message'] === 'OK') {
+       if (res === 'ok') {
          this.router.navigateByUrl('/home');
        } else {
          this.message = res['message'];

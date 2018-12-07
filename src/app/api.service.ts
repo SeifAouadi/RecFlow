@@ -20,8 +20,12 @@ export class ApiService {
     return this.http.post('http://localhost:3000/consultant', data);
   }
   uploadfile(file) {
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.set('Content-Type', 'form-data');
     return this.http.post('http://localhost:3000/upload', file, {headers} );
   }
+   formCompany(data) {
+     return this.http.post('http://localhost:3000/company', data);
+   }
+
 }

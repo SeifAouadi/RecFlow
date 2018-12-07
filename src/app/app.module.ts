@@ -10,6 +10,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SliderComponent } from './slider/slider.component';
 import { ConsultantComponent } from './consultant/consultant.component';
+import { HomeComponent } from './home/home.component';
+import { CompanyComponent } from './company/company.component';
+import { Control } from './control' ;
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +21,8 @@ import { ConsultantComponent } from './consultant/consultant.component';
     RegisterComponent,
     SliderComponent,
     ConsultantComponent,
+    HomeComponent,
+    CompanyComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +30,8 @@ import { ConsultantComponent } from './consultant/consultant.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    Control
   ],
   providers: [],
   bootstrap: [AppComponent]

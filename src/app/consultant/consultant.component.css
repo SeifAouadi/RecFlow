@@ -1,0 +1,22 @@
+h2{
+  color: #FEB58A!important;
+  font-size: 17px;
+}
+h1 {
+  color: #DE6262!important;
+}
+.button1 {
+border-radius: 50%;
+}
+.add {
+ margin-top: 50%;
+ margin-bottom: 50%;
+ font-size: 10px;
+}
+.btn-file {
+ border: 1px solid #FEB58A;
+ background-color: #FEB58A;
+ color: #DE6262;
+
+}
+

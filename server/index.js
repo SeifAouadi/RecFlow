@@ -6,7 +6,7 @@ var ConsultantModel = mongoose.model('consultant', Consultant);
 var multer  = require('multer')
 const port = process.env.port || 3000;
 var Candidat = require('./models/Candidat');
-var Company = require('./models/Company');
+
 const bcrypt = require('bcrypt');
 var cors = require('cors');
 const IncomingForm = require('formidable').IncomingForm;
@@ -70,11 +70,12 @@ app.post('/register', async (req, res) => {
           handleValidationError(err, req.body);
         }
         console.log("there is an error while adding user in DB:" + err);
-        res.send({success: "failed to add new user", status: 500});
+        throw new Error(err);
+
       }
     })
   } else {
-    res.send({success: "email already exists !!!", status: 500})
+    res.send({error: "email already exists !!!", status: 500})
   }
 });
 function handleValidationError(err, body) {
@@ -99,33 +100,19 @@ function handleValidationError(err, body) {
 else { res.send({message:'ok'})}
 });
 
-app.post('/newcompany', async (req, res) => {
-  var company = new Company();
-  company.name = req.body.name;
-  company.description = req.body.description;
-  company.address = req.body.address;
-  company.phone = req.body.phone;
-  company.postalCode = req.body.postalCode;
-  company.pathPhoto = req.body.pathPhoto;
-  company.socialLinks.facebook = req.body.facebook;
-  company.socialLinks.twitter = req.body.twitter;
-  company.socialLinks.linkedin = req.body.linkedin;
-  company.email = req.body.emailValue;
-  resultRegister = await Company.findOne({email: req.body.email});
-  if (!resultRegister) {
-    company.email = req.body.email;
+app.post('/company', async (req, res) => {
+  var company = new Companymodel(req.body);
     company.save((err, doc) => {
       if (!err) {
         res.send({success: "Your company is successfully added", status: 200});
       } else {
-        console.log("there is an error while adding user in DB:" + err);
-        res.send({success: "failed to add new user", status: 500});
+        console.log("there is an error while adding company in DB:" + err);
+       res.send(err);
+
       }
+
     })
-  } else {
-    res.send({success: "Email already used !!!", status: 500})
-  }
-});
+  });
 
 
 app.listen(port, function (err, response) {

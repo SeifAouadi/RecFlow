@@ -1,40 +1,91 @@
-
 <form class="form-group"  [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
-  <h1> Durée Experiance</h1>
-  <input type="number" formControlName="dureeExperience">
-  <div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
-<h1>Experience</h1>
-<h2>Societe :</h2>
-<div [formGroupName]="i">
+
+
+<h1 class="text-center">Experience</h1>
+<div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
+
+<div class="row" [formGroupName]="i">
+  <div class="col-6">
+<h2>Societe</h2>
 <input class="form-control" formControlName="societe" type="text" placeholder="Societe">
-<h2>Debut Experience :</h2>
-<input class="form-control" formControlName="debut" type="date" placeholder="debut Experience">
-<h2>Fin Experience :</h2>
-<input class="form-control" formControlName="fin" type="date" placeholder="Fin Experience">
-<h2>Tache realiser</h2>
+</div>
+<div class="col-6">
+<h2>Poste</h2>
 <input class="form-control" formControlName="tacheRealises" type="text" placeholder="tacheRealiser">
 </div>
+<div class="col-6">
+<h2 style="margin-top: 20px;">Debut Experience</h2>
+<input class="form-control" formControlName="debut" type="date" placeholder="debut Experience">
 </div>
-<button type="button" (click)="addExp()">+++</button>
+<div class="col-6">
+  <h2 style="margin-top: 20px;">Fin Experience</h2>
+  <input class="form-control" formControlName="fin" type="date" placeholder="Fin Experience">
+</div>
+</div>
+</div>
+<div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
+<button class="btn btn-outline-danger button1" type="button" (click)="addExp()"><p class="add">+</p></button>
+</div>
+
+<h1 class="text-center">Formation</h1>
 <div formArrayName="formation" *ngFor="let for of consultant.get('formation').controls; let i = index">
-<h1>Formation</h1>
+<div class="row" [formGroupName]="i">
+<div class="col-6">
 <h2>Institut</h2>
-<div [formGroupName]="i">
 <input type="text" formControlName="institut" placeholder="Institut" class="form-control">
+</div>
+<div class="col-6">
 <h2>Diplome</h2>
 <input type="text" formControlName="diplome" placeholder="Diplome" class="form-control">
-<h2>debut Formation</h2>
+</div>
+<div class="col-6">
+<h2 style="margin-top: 20px;">debut Formation</h2>
 <input type="date" placeholder="debut Formation" class="form-control" formControlName="debutF">
-<h2>Fin Formation</h2>
+</div>
+<div class="col-6">
+<h2 style="margin-top: 20px;">Fin Formation</h2>
 <input type="date" placeholder="Fin formation" class="form-control" formControlName="finF">
 </div>
 </div>
-<button type="button" (click)="addFormation()">++++</button>
-<h2>Phone :</h2>
-<input type="tel" placeholder="Phone" formControlName="phone" >
-<h2>Adresse:</h2>
-<input type="text" placeholder="Adresse" formControlName="adresse">
-<input type="text" placeholder="Skill" formControlName="skill">
-<button type="button" (click)="form(consultant);uploadFile()">get</button>
+</div>
+<div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
+    <button class="btn btn-outline-danger button1" type="button" (click)="addFormation()"><p class="add">+</p></button>
+    </div>
+    <h1 class="text-center">Social Information</h1>
+   <div class="row">
+   <div class="col-6">
+<h2>Phone</h2>
+<input class="form-control" type="tel" placeholder="Phone" formControlName="phone" >
+</div>
+<div class="col-6">
+<h2>Adresse</h2>
+<input class="form-control" type="text" placeholder="Adresse" formControlName="adresse">
+</div>
+   </div>
+
+
+   <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"[removable]="removable" (removed)="remove(fruit)">
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            {{fruit.name}}
+          </mat-chip>
+          <input formControlName="skill" placeholder="New fruit..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+<div class="text-center">
+  <h2>Photo de profil</h2>
+  <label class="btn btn-default btn-file">
+      Browse <input type="file" style="display: none;" formControlName="imageUser" (change)="filechangeEvent($event)">
+  </label>
+</div>
+<div class="text-center">
+<button class="btn btn-warning" type="button" (click)="form(consultant);uploadFile()">Submit</button>
+</div>
 </form>
-<input type="file" [(ngModel)]="imageUser" (change)="filechangeEvent($event)">
+
+
