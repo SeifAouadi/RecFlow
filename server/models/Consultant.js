@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 var consultantSchema = mongoose.Schema({
+  UserId :  { type: mongoose.Schema.Types.ObjectId, ref: 'Condidats' },
   dureeExprience: Number,
 
   experience: [{

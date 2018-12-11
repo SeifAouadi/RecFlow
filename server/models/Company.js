@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 var companySchema = mongoose.Schema({
+  comp :  { type: mongoose.Schema.Types.ObjectId, ref: 'Condidats' },
   name: {
     type: String,
   },
