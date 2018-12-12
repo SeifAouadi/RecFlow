@@ -113,6 +113,16 @@ app.post('/company', async (req, res) => {
 
     })
   });
+  app.get('/company/:id', async (req,res) => {
+    Companymodel.find({comp : req.params.id}).populate('condidats').then(result => {
+      res.send(result);
+    })
+  });
+  app.get('/consultant/:id', async (req,res) => {
+    ConsultantModel.find({UserId : req.params.id}).populate('condidats').then(result => {
+      res.send(result);
+    })
+  });
 
 
 app.listen(port, function (err, response) {
