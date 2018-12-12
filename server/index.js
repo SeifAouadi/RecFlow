@@ -24,7 +24,7 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage
 });
-var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
+mongoose.connect('mongodb://localhost:27017/rfDB', {
   useNewUrlParser: true,
   useCreateIndex: true,
 }, (err) => {
@@ -43,7 +43,7 @@ res.send(req.file)
 
 app.post('/consultant' , async (req,res) => {
  var consultant = new ConsultantModel(req.body);
-  console.log(consultant);
+ console.log(consultant);
 
   consultant.save();
   (error) => {

@@ -1,9 +1,9 @@
 h2{
-  color: #FEB58A!important;
+  color: #0f867fdb!important;
   font-size: 17px;
 }
 h1 {
-  color: #DE6262!important;
+  color: #0f867fdb!important;
 }
 .button1 {
 border-radius: 50%;
@@ -13,10 +13,48 @@ border-radius: 50%;
  margin-bottom: 50%;
  font-size: 10px;
 }
+.btn-outline-danger {
+  color: #0f867fdb;
+  background-color: transparent;
+  background-image: none;
+  border-color: #0f867fdb;
+}
 .btn-file {
- border: 1px solid #FEB58A;
- background-color: #FEB58A;
- color: #DE6262;
+ border: 1px solid #0f867fdb;
+ background-color: #0f867fdb;
+ color: #fff9f9;
 
+}
+.example-chip-list {
+  width: 100%;
+  border:none;
+}
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-accent {
+  background-color: #0f867fdb;
+  color: #fff;
+}
+.skill {
+  color: #191818!important;
+}
+.mat-form-field-infix {
+  display: block!important;
+  position: relative!important;
+  flex: auto!important;
+  min-width: 0!important;
+  width: 137px!important;
+}
+.btn-outline-danger1 {
+  color: red;
+  background-color: transparent;
+  background-image: none;
+  border-color: red;
+}
+.btn-outline-danger1:hover {
+  color: white;
+  background-color: red;
+}
+.btn-outline-danger:hover {
+  color: white;
+  background-color:  #0f867fdb;
 }
 

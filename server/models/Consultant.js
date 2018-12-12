@@ -14,7 +14,7 @@ var consultantSchema = mongoose.Schema({
     debutF: Date,
     finF : Date
    }],
-   skill: String,
+   skill:[],
    phone : Number,
    adresse: String,
    imagePath: String,

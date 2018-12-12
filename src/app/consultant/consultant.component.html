@@ -1,91 +1,132 @@
-<form class="form-group"  [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
+<form class="form-group" [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
 
+  <h1 style="border-bottom:5px solid#0f867fdb" class="text-center">Experience</h1>
+  <div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
 
-<h1 class="text-center">Experience</h1>
-<div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
+    <div class="row" [formGroupName]="i">
+      <div class="col-md-6">
+        <h2>Societe</h2>
+        <input class="form-control" [ngClass]="{ 'is-invalid': exp.get('societe').touched && exp.get('societe').invalid}"
+          formControlName="societe" type="text" placeholder="Societe">
 
-<div class="row" [formGroupName]="i">
-  <div class="col-6">
-<h2>Societe</h2>
-<input class="form-control" formControlName="societe" type="text" placeholder="Societe">
-</div>
-<div class="col-6">
-<h2>Poste</h2>
-<input class="form-control" formControlName="tacheRealises" type="text" placeholder="tacheRealiser">
-</div>
-<div class="col-6">
-<h2 style="margin-top: 20px;">Debut Experience</h2>
-<input class="form-control" formControlName="debut" type="date" placeholder="debut Experience">
-</div>
-<div class="col-6">
-  <h2 style="margin-top: 20px;">Fin Experience</h2>
-  <input class="form-control" formControlName="fin" type="date" placeholder="Fin Experience">
-</div>
-</div>
-</div>
-<div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
-<button class="btn btn-outline-danger button1" type="button" (click)="addExp()"><p class="add">+</p></button>
-</div>
-
-<h1 class="text-center">Formation</h1>
-<div formArrayName="formation" *ngFor="let for of consultant.get('formation').controls; let i = index">
-<div class="row" [formGroupName]="i">
-<div class="col-6">
-<h2>Institut</h2>
-<input type="text" formControlName="institut" placeholder="Institut" class="form-control">
-</div>
-<div class="col-6">
-<h2>Diplome</h2>
-<input type="text" formControlName="diplome" placeholder="Diplome" class="form-control">
-</div>
-<div class="col-6">
-<h2 style="margin-top: 20px;">debut Formation</h2>
-<input type="date" placeholder="debut Formation" class="form-control" formControlName="debutF">
-</div>
-<div class="col-6">
-<h2 style="margin-top: 20px;">Fin Formation</h2>
-<input type="date" placeholder="Fin formation" class="form-control" formControlName="finF">
-</div>
-</div>
-</div>
-<div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
-    <button class="btn btn-outline-danger button1" type="button" (click)="addFormation()"><p class="add">+</p></button>
+        <div class="invalid-feedback">required</div>
+      </div>
+      <div class="col-md-6">
+        <h2>Poste</h2>
+        <input class="form-control" [ngClass]="{ 'is-invalid': exp.get('tacheRealises').touched && exp.get('tacheRealises').invalid}"
+          formControlName="tacheRealises" type="text" placeholder="tacheRealiser">
+        <div class="invalid-feedback">required</div>
+      </div>
+      <div class="col-md-6">
+        <h2 style="margin-top: 20px;">Debut Experience</h2>
+        <mat-form-field class="example-full-width">
+          <input class="skill" formControlName="debut" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker3"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <h2 style="margin-top: 20px;">Fin Experience</h2>
+        <mat-form-field class="example-full-width">
+          <input class="skill" formControlName="fin" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker4"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+          <mat-datepicker #picker4></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
-    <h1 class="text-center">Social Information</h1>
-   <div class="row">
-   <div class="col-6">
-<h2>Phone</h2>
-<input class="form-control" type="tel" placeholder="Phone" formControlName="phone" >
-</div>
-<div class="col-6">
-<h2>Adresse</h2>
-<input class="form-control" type="text" placeholder="Adresse" formControlName="adresse">
-</div>
-   </div>
+    <div *ngIf="dateControl(exp)" class="text-danger float-md-right">Erreur Date</div>
 
 
-   <mat-form-field class="example-chip-list">
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"[removable]="removable" (removed)="remove(fruit)">
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            {{fruit.name}}
-          </mat-chip>
-          <input formControlName="skill" placeholder="New fruit..."
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event)">
-        </mat-chip-list>
-      </mat-form-field>
-<div class="text-center">
-  <h2>Photo de profil</h2>
-  <label class="btn btn-default btn-file">
+    <div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
+      <button style="margin-right:10px;" *ngIf="consultant.get('experience').controls.length > 1" class="btn btn-outline-danger1 button1"
+        type="button" (click)="deleteRow(i)">
+        <p class="add">X</p>
+      </button>
+      <button class="btn btn-outline-danger button1" type="button" (click)="addExp()">
+        <p class="add">+</p>
+      </button>
+    </div>
+  </div>
+
+  <h1 style="border-bottom:5px solid#0f867fdb" class="text-center">Formation</h1>
+  <div formArrayName="formation" *ngFor="let for of consultant.get('formation').controls; let i = index">
+    <div class="row" [formGroupName]="i">
+      <div class="col-md-6">
+        <h2>Institut</h2>
+        <input type="text" [ngClass]="{ 'is-invalid': for.get('institut').touched && for.get('institut').invalid}"
+          formControlName="institut" placeholder="Institut" class="form-control">
+        <div class="invalid-feedback">required</div>
+      </div>
+      <div class="col-md-6">
+        <h2>Diplome</h2>
+        <input type="text" [ngClass]="{ 'is-invalid': for.get('diplome').touched && for.get('diplome').invalid}"
+          formControlName="diplome" placeholder="Diplome" class="form-control">
+        <div class="invalid-feedback">required</div>
+      </div>
+      <div class="col-md-6">
+        <h2 style="margin-top: 20px;">debut Formation</h2>
+        <mat-form-field class="example-full-width">
+          <input class="skill" formControlName="debutF" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <h2 style="margin-top: 20px;">Fin Formation</h2>
+        <mat-form-field class="example-full-width">
+          <input class="skill" formControlName="finF" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker2"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      </div>
+     <div *ngIf="dateControl2(for)" class="text-danger float-lg-right">Erreur Date</div>
+    <div class="text-center" style="margin-top:20px;margin-bottom: 20px;">
+        <button style="margin-right:10px;" *ngIf="consultant.get('formation').controls.length > 1" class="btn btn-outline-danger1 button1"type="button" (click)="deleteRow2(i)"><p class="add">X</p></button>
+        <button class="btn btn-outline-danger button1" type="button" (click)="addFormation()">
+          <p class="add">+</p>
+        </button>
+      </div>
+  </div>
+
+  <h1 style="border-bottom:5px solid#0f867fdb" class="text-center">Social Information</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Phone</h2>
+      <input [ngClass]="{ 'is-invalid': consultant.get('phone').touched && consultant.get('phone').invalid}" class="form-control"
+        type="tel" placeholder="Phone" formControlName="phone">
+      <div class="invalid-feedback">required</div>
+    </div>
+    <div class="col-md-6">
+      <h2>Adresse</h2>
+      <input class="form-control" [ngClass]="{ 'is-invalid': consultant.get('adresse').touched && consultant.get('adresse').invalid}"
+        type="text" placeholder="Adresse" formControlName="adresse">
+      <div class="invalid-feedback">required</div>
+    </div>
+  </div>
+  <h2 style="margin-top:20px;" class="text-center">Skills</h2>
+  <mat-form-field class="example-chip-list">
+    <mat-chip-list #chipList>
+      <mat-chip color="accent" selected *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable"
+        (removed)="remove(fruit)">
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        {{fruit.name}}
+      </mat-chip>
+      <input class="skill" placeholder="Skills" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+  </mat-form-field>
+  <div class="text-center">
+    <h2>Photo de profil</h2>
+    <label class="btn btn-default btn-file">
       Browse <input type="file" style="display: none;" formControlName="imageUser" (change)="filechangeEvent($event)">
-  </label>
-</div>
-<div class="text-center">
-<button class="btn btn-warning" type="button" (click)="form(consultant);uploadFile()">Submit</button>
-</div>
+    </label>
+  </div>
+  <div class="text-center">
+    <button class="btn btn-info btn btn-login float-right" type="button" [disabled]="!consultant.valid" (click)="form(consultant);uploadFile()">Submit</button>
+  </div>
 </form>
-
-
