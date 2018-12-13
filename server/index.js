@@ -1,6 +1,7 @@
 const express = require('express');
 var mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 var Consultant = require('./models/Consultant');
 var ConsultantModel = mongoose.model('consultant', Consultant);
 var Company = require('./models/Company');
@@ -27,7 +28,7 @@ var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/consultant' , async (req,res) => {
+app.post('/consultant', async (req, res) => {
   var consultant = new ConsultantModel(req.body);
   console.log(consultant);
 
@@ -37,20 +38,20 @@ app.post('/consultant' , async (req,res) => {
     console.log(error)
   }
   res.send(consultant)
-  });
+});
 
 app.post('/register', async (req, res) => {
   var candidat = new Candidat();
   candidat.firstname = req.body.firstnameValue;
   candidat.lastname = req.body.lastnameValue;
-  resultRegister = await Candidat.findOne({email: req.body.email});
+  resultRegister = await Candidat.findOne({ email: req.body.email });
   if (!resultRegister) {
     candidat.email = req.body.emailValue;
     req.body.password = bcrypt.hashSync(req.body.passwordValue, 10);
     candidat.password = req.body.password;
     candidat.save((err, doc) => {
       if (!err) {
-        res.send({success: "a new user is successfully added", status: 200});
+        res.send({ success: "a new user is successfully added", status: 200 });
       } else {
         if (err.name === 'ValidationError') {
           handleValidationError(err, req.body);
@@ -61,7 +62,7 @@ app.post('/register', async (req, res) => {
       }
     })
   } else {
-    res.send({error: "email already exists !!!", status: 500})
+    res.send({ error: "email already exists !!!", status: 500 })
   }
 });
 function handleValidationError(err, body) {
@@ -75,40 +76,41 @@ function handleValidationError(err, body) {
     }
   }
 }
-  app.post('/login', async (req, res) => {
-    resultLogin = await Candidat.findOne({email: req.body.email});
-    if (!resultLogin) {
-        res.send({message: 'user not found'});
-    }
-    if (!bcrypt.compareSync(req.body.password, resultLogin.password)) {
-        res.send({message: 'bad password'})
-    }
-else { res.send({message:'ok'})}
+app.post('/login', async (req, res) => {
+  resultLogin = await Candidat.findOne({ email: req.body.email });
+  if (!resultLogin) {
+    res.send({ message: 'user not found' });
+  }
+  if (!bcrypt.compareSync(req.body.password, resultLogin.password)) {
+    res.send({ message: 'bad password' })
+  }
+  const token = jwt.sign({ data: resultLogin }, 'secret_code');
+else { res.send({ message: 'ok' }) }
 });
 
 app.post('/company', async (req, res) => {
   var company = new Companymodel(req.body);
-    company.save((err, doc) => {
-      if (!err) {
-        res.send({success: "Your company is successfully added", status: 200});
-      } else {
-        console.log("there is an error while adding company in DB:" + err);
-       res.send(err);
+  company.save((err, doc) => {
+    if (!err) {
+      res.send({ success: "Your company is successfully added", status: 200 });
+    } else {
+      console.log("there is an error while adding company in DB:" + err);
+      res.send(err);
 
-      }
+    }
 
-    })
-  });
-  app.get('/company/:id', async (req,res) => {
-    Companymodel.find({comp : req.params.id}).populate('condidats').then(result => {
-      res.send(result);
-    })
-  });
-  app.get('/consultant/:id', async (req,res) => {
-    ConsultantModel.find({UserId : req.params.id}).populate('condidats').then(result => {
-      res.send(result);
-    })
-  });
+  })
+});
+app.get('/company/:id', async (req, res) => {
+  Companymodel.find({ comp: req.params.id }).populate('condidats').then(result => {
+    res.send(result);
+  })
+});
+app.get('/consultant/:id', async (req, res) => {
+  ConsultantModel.find({ UserId: req.params.id }).populate('condidats').then(result => {
+    res.send(result);
+  })
+});
 
 
 app.listen(port, function (err, response) {
