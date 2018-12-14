@@ -1,0 +1,50 @@
+<section class="list-block py-0 py-sm-5">
+  <div class="container p-sm-5">
+    <button class="btn btn-outline-light float-right d-none d-sm-block" style="color: #DE6262; font-weight: bold;
+    border-color: #FEB58A; font-size: 18px">Logout</button>
+    <h3 class="text-center">Consultants LIST</h3>
+    <div *ngIf="!consultants?.length" style="color: #DE6262">No consultants saved yet !!</div>
+    <input type="text" [(ngModel)]="consultantFilter.firstName" placeholder="Type to filter by firstname">
+    <input type="text" [(ngModel)]="consultantFilter.lastName" placeholder="Type to filter by lastname">
+    <input type="text" [(ngModel)]="consultantFilter.email" placeholder="Type to filter by email">
+    <div *ngFor="let consultant of consultants">
+      <div *ngFor="let ski of consultant.skill">
+        <input type="checkbox" [(ngModel)]="consultantFilter.skill">
+        <label class="text-dark">{{ ski.technologie }}</label>
+      </div>
+    </div>
+    <div *ngIf="!!consultants?.length" class="row justify-content-center p-md-5">
+      <div class="col-12 col-sm-10 col-md-4 text-md-center p-0 p-md-5"  *ngFor="let consultant of consultants | filterBy : consultantFilter">
+        <div class="card mb-sm-5 hover01">
+          <figure class="w-100 h-100">
+            <img class="card-img-top" src="https://picsum.photos/200/200/?random" alt="Card image cap">
+          </figure>
+          <div class="card-body">
+            <h5 class="card-title">{{ consultant.firstName }} {{ consultant.lastName | uppercase }}</h5>
+            <ul class="list-unstyled">
+              <li class="phone">
+                <a href="tel:{{ consultant.phone }}"><i class="fa fa-phone pr-2"></i>{{ consultant.phone }}</a>
+              </li>
+              <li>
+                <p class="text-center"><i class="fas fa-envelope"></i> {{ consultant.email}}</p>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <div class="clearfix">
+              <div class="float-none float-lg-left mb-3 mb-lg-0 mt-1">
+
+              </div>
+              <div class="float-none float-lg-right mt-1">
+                <a href="#" class="lis-light lis-f-14"><i
+                  class="fa fa-envelope-o lis-id-info  lis-rounded-circle-50 text-center"></i></a>
+                <a href="#" class="lis-green-light text-white p-2 lis-rounded-circle-50 lis-f-14"><i
+                  class="fa fa-star"></i> 5.0</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(consultants | filterBy :consultantFilter).length === 0" class="text-danger"> no matching consultants !</div>
+    </div>
+  </div>
+</section>
