@@ -1,12 +1,24 @@
 
 h2{
-  color: #DE6262!important;
+ color:#0f867fdb;
 }
-h4{
+label {
+  display: inline-block;
+  color: #0f867fdb;
+  margin-bottom: .5rem;
+}
+h4[_ngcontent-c3] {
   text-align: center;
   margin-top: 20px;
+  color: #0f867fdb;
 }
 .center_div{
   margin: 0 auto;
   width:40% ;/* value of your choice which suits your alignment */
 }
+.btn-file {
+  border: 1px solid #0f867fdb;
+  background-color: #0f867fdb;
+  color: white;
+
+ }

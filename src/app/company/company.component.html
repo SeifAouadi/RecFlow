@@ -4,13 +4,15 @@
     <div class="col-sm-6">
       <div class="form-group">
         <label for="email1">Nom de la société</label>
-        <input type="text" formControlName="Nom" id="nom" class="form-control" placeholder="nom de la société...">
+        <input [ngClass]="{ 'is-invalid': company.get('Nom').touched && company.get('Nom').invalid}" type="text" formControlName="Nom" id="nom" class="form-control" placeholder="nom de la société...">
+      <div class="invalid-feedback">Required</div>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" formControlName="email" id="nom" class="form-control" placeholder="email...">
+        <input type="text" [ngClass]="{ 'is-invalid': company.get('email').touched && company.get('email').invalid}" formControlName="email" id="nom" class="form-control" placeholder="email...">
+        <div class="invalid-feedback">Required</div>
       </div>
     </div>
   </div>
@@ -19,39 +21,51 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="Adresse">Adresse</label>
-          <input type="text" formControlName="Adresse" id="adresse" class="form-control" placeholder="Adresse...">
+          <input type="text" [ngClass]="{ 'is-invalid': company.get('Adresse').touched && company.get('Adresse').invalid}" formControlName="Adresse" id="adresse" class="form-control" placeholder="Adresse...">
+          <div class="invalid-feedback">Required</div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
           <label for="phone">phone</label>
-          <input type="number" formControlName="phone" id="phone" class="form-control" placeholder="numéro de télephone...">
+          <input type="number" [ngClass]="{ 'is-invalid': company.get('phone').touched && company.get('phone').invalid}" formControlName="phone" id="phone" class="form-control" placeholder="numéro de télephone...">
+          <div class="invalid-feedback">Required</div>
         </div>
       </div>
     </div>
     <div class="form-group">
         <label for="descritpion">Description</label>
-        <textarea type="text" formControlName="Description" id="descritpion" class="form-control" placeholder="descritpion..."></textarea>
+        <textarea type="text" [ngClass]="{ 'is-invalid': company.get('Description').touched && company.get('Description').invalid}" formControlName="Description" id="descritpion" class="form-control" placeholder="descritpion..."></textarea>
+        <div class="invalid-feedback">Required</div>
       </div>
     <div class="form-group">
       <h4>social links</h4>
       <div class="row">
         <div class="col-sm-6">
           <label for="facebook">Facebook</label>
-          <input type="text" formControlName="facebook" id="facebook" class="form-control" placeholder="facebook...">
+          <input type="text" [ngClass]="{ 'is-invalid': company.get('facebook').touched && company.get('facebook').invalid}" formControlName="facebook" id="facebook" class="form-control" placeholder="facebook...">
+          <div class="invalid-feedback">Required</div>
         </div>
         <div class="col-sm-6">
           <label for="tweeter">Tweeter</label>
-          <input type="text" formControlName="tweeter" id="tweeter" class="form-control" placeholder="tweeter...">
+          <input type="text" [ngClass]="{ 'is-invalid': company.get('tweeter').touched && company.get('tweeter').invalid}" formControlName="tweeter" id="tweeter" class="form-control" placeholder="tweeter...">
+          <div class="invalid-feedback">Required</div>
         </div>
       </div>
       <div class="container center_div">
         <label for="LinkedIn">LinkedIn</label>
-        <input type="text" formControlName="linkedin" id="linkedin" class="form-control" placeholder="linkedin...">
+        <input type="text" [ngClass]="{ 'is-invalid': company.get('linkedin').touched && company.get('linkedin').invalid}" formControlName="linkedin" id="linkedin" class="form-control" placeholder="linkedin...">
+        <div class="invalid-feedback">Required</div>
       </div>
     </div>
+    <div class="text-center">
+    <h2>Logo de l'entreprise</h2>
+  <label class="btn btn-default btn-file">
+      Browse <input type="file" style="display: none;" formControlName="pathPhoto" (change)="filechangeEvent($event)">
+  </label>
+</div>
 
     <div class="form-check">
-      <button type="button" class="btn btn-login float-right" (click)="formCompany(company)">Submit</button>
+      <button type="button" class="btn btn-info btn btn-login float-right" [disabled]="!company.valid" (click)="formCompany(company);uploadFile()">Submit</button>
     </div>
 </form>

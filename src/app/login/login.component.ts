@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { from } from 'rxjs';
 import { Route, Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,11 +21,13 @@ export class LoginComponent implements OnInit {
     const myObj = { email: this.email, password: this.password };
     this.message = '';
     this.apiService.loginApi(myObj).subscribe(res => {
-      console.log(res);
-       if (res.json().message === 'ok') {
+      console.log('response', res);
+       if (res['message'] === 'ok') {
+         console.log(res['Token']);
+         localStorage.setItem('token', res['Token']);
          this.router.navigateByUrl('/home');
        } else {
-         this.message = res.json().message;
+         this.message = res['message'];
          console.log(this.message);
        }
     });

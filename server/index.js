@@ -4,18 +4,29 @@ const bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var Consultant = require('./models/Consultant');
 var ConsultantModel = mongoose.model('consultant', Consultant);
-var Company = require('./models/Company');
-var Companymodel = mongoose.model('company', Company);
-
+var multer  = require('multer')
 const port = process.env.port || 3000;
 var Candidat = require('./models/Candidat');
-
+var Company = require('./models/Company');
+var Companymodel = mongoose.model('company', Company);
 const bcrypt = require('bcrypt');
 var cors = require('cors');
+const IncomingForm = require('formidable').IncomingForm;
+var form = new IncomingForm();
 const app = express();
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, './imageUser/')
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.originalname);
+  }
+});
 
-
-var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
+var upload = multer({
+  storage: storage
+});
+mongoose.connect('mongodb://localhost:27017/rfDB', {
   useNewUrlParser: true,
   useCreateIndex: true,
 }, (err) => {
@@ -28,9 +39,13 @@ var db = mongoose.connect('mongodb://localhost:27017/rfDB', {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/consultant', async (req, res) => {
-  var consultant = new ConsultantModel(req.body);
-  console.log(consultant);
+ app.post('/upload', upload.single('file'), function (req, res, next) {
+res.send(req.file)
+  });
+
+app.post('/consultant' , async (req,res) => {
+ var consultant = new ConsultantModel(req.body);
+ console.log(consultant);
 
   consultant.save();
   (error) => {
@@ -84,8 +99,9 @@ app.post('/login', async (req, res) => {
   if (!bcrypt.compareSync(req.body.password, resultLogin.password)) {
     res.send({ message: 'bad password' })
   }
-  const token = jwt.sign({ data: resultLogin }, 'secret_code');
-else { res.send({ message: 'ok' }) }
+  else { res.send({ message: 'ok', Token : jwt.sign({data:resultLogin},'my_secreeeet')})
+  jwt.verify() }
+  /*const token = jwt.sign({ data: resultLogin }, 'secret_code')};*/
 });
 
 app.post('/company', async (req, res) => {

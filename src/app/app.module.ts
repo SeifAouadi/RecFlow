@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,7 @@ import { SliderComponent } from './slider/slider.component';
 import { ConsultantComponent } from './consultant/consultant.component';
 import { HomeComponent } from './home/home.component';
 import { CompanyComponent } from './company/company.component';
+import { Control } from './control' ;
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { CompanyComponent } from './company/company.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HttpModule,
-    FormsModule
+    HttpClientModule,
+    FormsModule,
+    Control
   ],
   providers: [],
   bootstrap: [AppComponent]
