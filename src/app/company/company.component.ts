@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
+import { compileBaseDefFromMetadata } from '@angular/compiler';
+import { COMMON_DEPRECATED_I18N_PIPES } from '@angular/common/src/pipes/deprecated';
 
 @Component({
   selector: 'app-company',
@@ -32,6 +34,7 @@ export class CompanyComponent implements OnInit {
   formCompany(f) {
     if (f.valid) {
       this.test = {
+        role: 'company',
         Nom: f.value.Nom,
         email: f.value.email,
         description: f.value.Description,

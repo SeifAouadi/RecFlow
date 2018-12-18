@@ -101,7 +101,7 @@ app.post('/login', async (req, res) => {
   }
   else { res.send({ message: 'ok', Token : jwt.sign({data:resultLogin},'my_secreeeet')})
   jwt.verify() }
-  /*const token = jwt.sign({ data: resultLogin }, 'secret_code')};*/
+
 });
 
 app.post('/company', async (req, res) => {

@@ -108,6 +108,7 @@ export class ConsultantComponent implements OnInit {
   form(f) {
    if (f.valid) {
       this.test = {
+        role : 'consultant',
         experience: f.value.experience,
         formation: f.value.formation,
         phone: f.value.phone,
