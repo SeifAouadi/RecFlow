@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 var consultantSchema = mongoose.Schema({
-  UserId :  { type: mongoose.Schema.Types.ObjectId, ref: 'Condidats' },
-  dureeExprience: Number,
+  role: String,
+  domaine: String,
   experience: [{
     societe: String,
     debut: Date,
@@ -19,5 +19,6 @@ var consultantSchema = mongoose.Schema({
    phone : Number,
    adresse: String,
    imagePath: String,
+   UserId: { type: mongoose.Schema.Types.ObjectId, ref:'Candidats'}
 })
  module.exports= consultantSchema;

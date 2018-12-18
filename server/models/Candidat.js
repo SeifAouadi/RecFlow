@@ -26,4 +26,4 @@ candidatSchema.path('email').validate( (val)=> {
   return emailRegex.test(val);
 }, 'Valid E-mail please.');
 
-var Candidat = module.exports =mongoose.model('Candidat',candidatSchema);
+ module.exports= candidatSchema;

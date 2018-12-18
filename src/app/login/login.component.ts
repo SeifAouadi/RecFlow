@@ -20,8 +20,10 @@ export class LoginComponent implements OnInit {
     const myObj = { email: this.email, password: this.password };
     this.message = '';
     this.apiService.loginApi(myObj).subscribe(res => {
-      console.log(res);
-       if (res === 'ok') {
+      console.log('response', res);
+       if (res['message'] === 'ok') {
+         console.log(res['Token']);
+         localStorage.setItem('token', res['Token']);
          this.router.navigateByUrl('/home');
        } else {
          this.message = res['message'];
