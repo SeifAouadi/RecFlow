@@ -1,6 +1,7 @@
 const express = require('express');
 var mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 var Consultant = require('./models/Consultant');
 var ConsultantModel = mongoose.model('consultant', Consultant);
 var multer  = require('multer');
@@ -54,7 +55,7 @@ app.post('/consultant' , async (req,res) => {
     console.log(error)
   }
   res.send(consultant)
-  });
+});
 
   app.post('/register', async (req, res) => {
     var candidat = new CandidatModel();
@@ -106,14 +107,14 @@ app.post('/consultant' , async (req,res) => {
   });
 app.post('/company', async (req, res) => {
   var company = new Companymodel(req.body);
-    company.save((err, doc) => {
-      if (!err) {
-        res.send({success: "Your company is successfully added", status: 200});
-      } else {
-        console.log("there is an error while adding company in DB:" + err);
-       res.send(err);
+  company.save((err, doc) => {
+    if (!err) {
+      res.send({ success: "Your company is successfully added", status: 200 });
+    } else {
+      console.log("there is an error while adding company in DB:" + err);
+      res.send(err);
 
-      }
+    }
 
     })
   });
