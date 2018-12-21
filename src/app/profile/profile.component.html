@@ -1,0 +1,132 @@
+<section class="newBody" *ngFor="let pro of profile">
+  <div class="container emp-profile">
+    <form method="post">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="profile-img">
+            <img src="./../../assets/imageUser/{{removeFakePath(pro.imagePath)}}" alt="" />
+            <div class="file btn btn-lg btn-primary">
+              Change Photo
+              <input type="file" name="file" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="profile-head" *ngFor="let cord of profilecord">
+            <h5>
+              {{cord.firstname}} {{cord.lastname}}
+            </h5>
+            <h6>
+              {{cord.email}}
+            </h6>
+            <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                  aria-selected="true">Experience</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                  aria-selected="false">Formation</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+            <input style="margin-bottom: 20px;" (click)="logOut()" type="submit" class="profile-edit-btn" name="btnAddMore" value="Logout" />
+          <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+
+          <div class="profile-work">
+            <p>SKILLS</p>
+            <div *ngFor="let skil of pro.skill">
+              <p href="">{{skil}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="tab-content profile-tab" id="myTabContent" >
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" >
+              <div style="border-bottom:3px solid #0f867fdb" *ngFor="let exp of pro.experience">
+              <div class="row" >
+                <div class="col-md-6" >
+                  <label>Societe</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{exp.societe}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Poste</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{exp.tacheRealises}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Debut</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{exp.debut | date : 'mediumDate'}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Fin</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{exp.fin | date : 'mediumDate'}}</p>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div   class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" >
+              <div style="border-bottom:3px solid #0f867fdb" *ngFor="let for of pro.formation">
+              <div class="row" >
+                <div class="col-md-6">
+                  <label>institut</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{for.institut}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Diplome</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{for.diplome}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Debut</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{for.debutF | date : 'mediumDate'}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Fin</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{for.finF | date : 'mediumDate'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            </div>
+          </div>
+        </div>
+
+    </form>
+  </div>
+</section>

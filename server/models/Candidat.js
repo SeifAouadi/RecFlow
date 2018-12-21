@@ -17,7 +17,9 @@ var candidatSchema = mongoose.Schema({
   password : {
     type: String,
     required: 'you must enter password'
-  }
+  },
+  cansul : {type: mongoose.Schema.Types.ObjectId, ref: 'Consultants' },
+  comp : {type : mongoose.Schema.Types.ObjectId, ref : 'Companys'}
 });
 
 

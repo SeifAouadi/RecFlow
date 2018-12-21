@@ -11,6 +11,7 @@ export class CompanyComponent implements OnInit {
   company: FormGroup;
   test: any;
   fileUpload: Array<File> = [];
+  token;
   constructor(public apiService: ApiService, public fb: FormBuilder) {
     this.company = this.fb.group({
       Nom: ['', [Validators.required, Validators.minLength(2)]],
@@ -27,6 +28,7 @@ export class CompanyComponent implements OnInit {
   }
 
   ngOnInit() {
+   this.token = this.apiService.decodetoken();
 
   }
   formCompany(f) {
@@ -42,11 +44,12 @@ export class CompanyComponent implements OnInit {
           tweeter: f.value.tweeter,
           linkedin: f.value.linkedin
         }],
-        pathPhoto: f.value.pathPhoto
+        pathPhoto: f.value.pathPhoto,
+        user : this.token.data._id
 
       };
       console.log(this.test);
-      this.apiService.formCompany(this.test).subscribe(res => {
+      this.apiService.formCompany(this.test, this.token.data._id).subscribe(res => {
         console.log(res);
       });
     }

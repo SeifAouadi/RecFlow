@@ -1,44 +1,100 @@
-
 <section class="list-block py-0 py-sm-5">
-    <div class="container p-sm-5">
-      <button class="btn btn-outline-light float-right d-none d-sm-block" style="color: #DE6262; font-weight: bold;
-      border-color: #FEB58A; font-size: 18px">Logout</button>
-      <h3 class="text-center">Consultants LIST</h3>
-      <div>
-
+  <div class="container p-sm-5">
+    <button (click)="logOut()" class="btn btn-outline-light float-right d-none d-sm-block" style="color: #0f867fdb; font-weight: bold;
+      border-color: #0f867fdb; font-size: 18px">Logout</button>
+    <h3 class="text-center">Consultants LIST</h3>
+    <div>
+      <div style="margin-top:40px;" class="row">
+        <div class="col-lg-2" style="border: 1px solid #0f867fdb; padding: 10px; background-color:#0f867fdb; margin-right: 10px;">
+          <a href="javascript:void(0)" style="color:white" (click)="filterConsultant('Finance')">Finance</a>
+        </div>
+        <div class="col-lg-2" style="border: 1px solid #0f867fdb; padding: 10px; background-color:#0f867fdb; margin-right: 10px;">
+          <a href="javascript:void(0)" (click)="filterConsultant('Information technologie')" style="color:white">Information technologie</a>
+        </div>
+        <div class="col-lg-2" style="border: 1px solid #0f867fdb; padding: 10px; background-color:#0f867fdb; margin-right: 10px;">
+          <a href="javascript:void(0)" (click)="filterConsultant('Marketing')" style="color:white">Marketing</a>
+        </div>
+        <div class="col-lg-2" style="border: 1px solid #0f867fdb; padding: 10px; background-color:#0f867fdb; margin-right: 10px;">
+          <a href="javascript:void(0)" (click)="filterConsultant('Humain Ressources')" style="color:white">Humain Ressources</a>
+        </div>
+        <div class="col-lg-2" style="border: 1px solid #0f867fdb; padding: 10px; background-color:#0f867fdb; margin-right: 10px;">
+          <a href="javascript:void(0)" (click)="filterConsultant('Administration')" style="color:white">Administration</a>
+        </div>
       </div>
-      <div *ngIf="!!consultants?.length" class="row justify-content-center p-md-5">
-        <div class="col-12 col-sm-10 col-md-4 text-md-center p-0 p-md-5">
-          <div class="card mb-sm-5 hover01">
-            <figure class="w-100 h-100">
-              <img class="card-img-top" src="https://picsum.photos/200/200/?random" alt="Card image cap">
-            </figure>
-            <div class="card-body">
-              <h5 class="card-title"></h5>
-              <ul class="list-unstyled">
-                <li class="phone">
-                  <a><i class="fa fa-phone pr-2"></i></a>
-                </li>
-                <li>
-                  <p class="text-center"><i class="fas fa-envelope"></i> </p>
-                </li>
-              </ul>
-            </div>
-            <div class="card-footer">
-              <div class="clearfix">
-                <div class="float-none float-lg-left mb-3 mb-lg-0 mt-1">
-
+      <div class="row">
+        <div class="col-md-4" style="margin-top: 40px;" *ngFor="let for of Fil">
+          <div *ngFor="let form of candidat">
+            <div class="card" style="width: 18rem;">
+              <div class="text-center" style="margin-top:10px;">
+                <img class="card-img-top" src="./../../assets/imageUser/{{removeFakePath(for.imagePath)}}" alt="Card image cap">
+              </div>
+              <div class="card-body text-center">
+                <h4 class="card-text">{{form.firstname}} {{form.lastname}}</h4>
+                <div *ngFor="let dip of for.experience">
+                  <h6 class="card-text">{{dip.tacheRealises}}</h6>
                 </div>
-                <div class="float-none float-lg-right mt-1">
-                  <a href="#" class="lis-light lis-f-14"><i
-                    class="fa fa-envelope-o lis-id-info  lis-rounded-circle-50 text-center"></i></a>
-                  <a href="#" class="lis-green-light text-white p-2 lis-rounded-circle-50 lis-f-14"><i
-                    class="fa fa-star"></i> 5.0</a></div>
+                <button style="margin-top: 10px;" (click)="getConsultant(for.user)" type="button" class="btn btn-info"
+                  data-toggle="modal" data-target="#exampleModalLong">
+                  View Profile
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content" *ngFor="let cord of name">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">profile {{cord.firstname}} {{cord.lastname}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div *ngFor="let profile of view" class="modal-body">
+                        <img style="width: 120px;" class="card-img-top" src="./../../assets/imageUser/{{removeFakePath(profile.imagePath)}}">
+                        <p style="margin-top: 10px;">{{cord.email}}</p>
+                        <div class="row">
+                          <div *ngFor="let exp of profile.experience" class="col-md-6">
+                            <h4>Experience</h4>
+                            <p>Societe: {{exp.societe}}</p>
+                            <p>Poste : {{exp.tacheRealises}}</p>
+                            <p>Debut : {{exp.debut | date : 'mediumDate'}}</p>
+                            <p>Fin : {{exp.fin | date : 'mediumDate'}}</p>
+                          </div>
+                          <div *ngFor="let for of profile.formation" class="col-md-6">
+                            <h4>Foramtion</h4>
+                            <p>Institut : {{for.institut}}</p>
+                            <p>Diplome : {{for.diplome}}</p>
+                            <p>Debut : {{for.debutF | date : 'mediumDate'}}</p>
+                            <p>Fin : {{for.finF | date :'mediumDate'}}</p>
+                          </div>
+                        </div>
+                        <h4>Skills</h4>
+                        <div class="row">
+                          <div class="col-md-4" *ngFor="let skilss of profile.skill">
+                            <p style="border: 1px solid #0f867fdb;background-color: #0f867fdb;color: white;">{{skilss}}</p>
+                          </div>
+                        </div>
+                        <h4>Sociel Links</h4>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <p>Phone: {{profile.phone}}</p>
+                          </div>
+                          <div class="col-md-6">
+                            <p>Adresse: {{profile.adresse}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="text-danger"> no matching consultants !</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>

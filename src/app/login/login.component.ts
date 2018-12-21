@@ -14,22 +14,36 @@ export class LoginComponent implements OnInit {
   password;
   message;
   imageUser: File = null;
-  constructor(  public router: Router, public apiService: ApiService ) {  }
+  token;
+  iduser;
+  company;
+  constructor(public router: Router, public apiService: ApiService) { }
   ngOnInit() {
   }
   loginBtn() {
+
     const myObj = { email: this.email, password: this.password };
     this.message = '';
     this.apiService.loginApi(myObj).subscribe(res => {
       console.log('response', res);
-       if (res['message'] === 'ok') {
-         console.log(res['Token']);
-         localStorage.setItem('token', res['Token']);
-         this.router.navigateByUrl('/home');
-       } else {
-         this.message = res['message'];
-         console.log(this.message);
-       }
+      if (res['message'] === 'ok') {
+        console.log(res['Token']);
+        localStorage.setItem('token', res['Token']);
+        this.token = this.apiService.decodetoken();
+        if (this.token['data'].comp) {
+          this.router.navigateByUrl('/test');
+        }
+        if (this.token['data'].cansul) {
+          this.router.navigateByUrl('/profile');
+        }
+        if (!this.token['data'].comp && !this.token['data'].cansul) {
+          this.router.navigateByUrl('/home');
+        }
+      } else {
+        this.message = res['message'];
+        alert(this.message);
+      }
     });
   }
 }
+

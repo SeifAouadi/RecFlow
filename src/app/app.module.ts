@@ -13,7 +13,9 @@ import { ConsultantComponent } from './consultant/consultant.component';
 import { HomeComponent } from './home/home.component';
 import { CompanyComponent } from './company/company.component';
 import { Control } from './control';
-import { TestComponent } from './test/test.component' ;
+import { TestComponent } from './test/test.component';
+import { ProfileComponent } from './profile/profile.component';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { TestComponent } from './test/test.component' ;
     ConsultantComponent,
     HomeComponent,
     CompanyComponent,
-    TestComponent
+    TestComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

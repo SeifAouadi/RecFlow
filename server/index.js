@@ -18,7 +18,7 @@ var form = new IncomingForm();
 const app = express();
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, './imageUser/')
+      cb(null, './../src/assets/imageUser/')
   },
   filename: function (req, file, cb) {
       cb(null, file.originalname);
@@ -45,17 +45,29 @@ app.use(bodyParser.json());
 res.send(req.file)
   });
 
-app.post('/consultant' , async (req,res) => {
- var consultant = new ConsultantModel(req.body);
- console.log(consultant);
+app.post('/consultant/:id' , async (req,res) => {
+ const consultant = await ConsultantModel.findOne({user: req.params.id})
+ if (consultant) {
+    const cand =  await ConsultantModel.findByIdAndUpdate(consultant._id,{$set:req.body})
+} else {
+    const consu = await ConsultantModel.create(req.body)
+    const cand = await CandidatModel.findByIdAndUpdate(req.params.id, {$set: {cansul: consu._id}})
+    const candnew = await CandidatModel.findOne({_id:req.params.id})
 
-  consultant.save();
-  (error) => {
-    res.sendStatus(500)
-    console.log(error)
-  }
-  res.send(consultant)
+    res.send({Token : jwt.sign({ data: candnew}, 'my_secreeeet')})
+    // jwt.verify()
+}
 });
+ // const consul =  await ConsultantModel.findById({_id:consultant._id});
+ // await CandidatModel.$set({consul : consul});
+
+  //consultant.save();
+  // (error) => {
+  //   res.sendStatus(500)
+  //   console.log(error)
+  // }
+  // res.send(consultant)
+
 
   app.post('/register', async (req, res) => {
     var candidat = new CandidatModel();
@@ -68,18 +80,15 @@ app.post('/consultant' , async (req,res) => {
       candidat.password = req.body.password;
       candidat.save((err, doc) => {
         if (!err) {
-          res.send({success: "a new user is successfully added", status: 200});
+          res.send({message: "a new user is successfully added", status: 200});
         } else {
-          if (err.name === 'ValidationError') {
+          /*if (err.name === 'ValidationError') {
             handleValidationError(err, req.body);
-          }
-          console.log("there is an error while adding user in DB:" + err);
-          throw new Error(err);
+          }*/
+          res.send({message: "email already exists !!!", status: 500})
 
         }
       })
-    } else {
-      res.send({error: "email already exists !!!", status: 500})
     }
   });
   function handleValidationError(err, body) {
@@ -105,26 +114,25 @@ app.post('/consultant' , async (req,res) => {
     jwt.verify() }
     /*const token = jwt.sign({ data: resultLogin }, 'secret_code')};*/
   });
-app.post('/company', async (req, res) => {
-  var company = new Companymodel(req.body);
-  company.save((err, doc) => {
-    if (!err) {
-      res.send({ success: "Your company is successfully added", status: 200 });
-    } else {
-      console.log("there is an error while adding company in DB:" + err);
-      res.send(err);
+app.post('/company/:id', async (req, res) => {
+  const company = await Companymodel.findOne({user : req.params.id});
+  if (company) {
+    const cand = await Companymodel.findByIdAndUpdate(company._id, {$set: req.body});
+    res.send(cand);
+  } else {
+    const camp = await Companymodel.create(req.body);
+    const cand = await CandidatModel.findByIdAndUpdate(req.params.id, {$set: {comp : camp._id}})
+    res.send(cand);
+  }
 
-    }
-
-    })
   });
   app.get('/company/:id', async (req,res) => {
-    Companymodel.find({comp : req.params.id}).populate('condidats').then(result => {
+    Companymodel.find({user : req.params.id}).populate('condidats').then(result => {
       res.send(result);
     })
   });
   app.get('/consultant/:id', async (req,res) => {
-    ConsultantModel.find({UserId : req.params.id}).populate('condidats').then(result => {
+    ConsultantModel.find({user : req.params.id}).populate('condidats').then(result => {
       res.send(result);
     })
   });
@@ -132,6 +140,10 @@ app.post('/company', async (req, res) => {
 const candidat = await CandidatModel.findById({_id : req.params.id})
 res.send(candidat);
   })
+  /*app.get('/consultant/:id', async (req,res)=> {
+    const consultant = await ConsultantModel.findById({_id : req.params.id});
+    res.send(consultant);
+  })*/
   app.get('/consultant', async (req, res) => {
     const consultant = await ConsultantModel.find(req.body)
     res.send(consultant)
