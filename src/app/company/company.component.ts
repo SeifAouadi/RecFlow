@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-company',
@@ -12,7 +13,7 @@ export class CompanyComponent implements OnInit {
   test: any;
   fileUpload: Array<File> = [];
   token;
-  constructor(public apiService: ApiService, public fb: FormBuilder) {
+  constructor(public apiService: ApiService, public fb: FormBuilder, public router: Router) {
     this.company = this.fb.group({
       Nom: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
@@ -34,7 +35,7 @@ export class CompanyComponent implements OnInit {
   formCompany(f) {
     if (f.valid) {
       this.test = {
-        Nom: f.value.Nom,
+        name: f.value.Nom,
         email: f.value.email,
         description: f.value.Description,
         adresse: f.value.Adresse,
@@ -51,7 +52,10 @@ export class CompanyComponent implements OnInit {
       console.log(this.test);
       this.apiService.formCompany(this.test, this.token.data._id).subscribe(res => {
         console.log(res);
+        localStorage.clear();
+        localStorage.setItem('token', res['Token']);
       });
+    this.router.navigateByUrl('/profileC');
     }
   }
   filechangeEvent(fileInput: any) {
@@ -63,5 +67,17 @@ export class CompanyComponent implements OnInit {
     this.apiService.uploadfile(fba).subscribe(res => {
       console.log(res);
     });
+  }
+  guard() {
+    this.token = this.apiService.decodetoken();
+    if (this.token) {
+      if (this.token['data'].cansul) {
+        this.router.navigateByUrl('/profile');
+      } else if (!this.token['data'].comp && !this.token['data'].cansul) {
+        this.router.navigateByUrl('/home');
+      }
+    } else {
+      this.router.navigateByUrl('/login');
+    }
   }
 }

@@ -16,6 +16,7 @@ import { Control } from './control';
 import { TestComponent } from './test/test.component';
 import { ProfileComponent } from './profile/profile.component';
 import { from } from 'rxjs';
+import { ProfileCComponent } from './profile-c/profile-c.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { from } from 'rxjs';
     HomeComponent,
     CompanyComponent,
     TestComponent,
-    ProfileComponent
+    ProfileComponent,
+    ProfileCComponent
   ],
   imports: [
     BrowserModule,

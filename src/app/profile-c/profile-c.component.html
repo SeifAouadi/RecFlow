@@ -1,0 +1,71 @@
+<section class="newBody" *ngFor="let pro of profile">
+  <div class="container emp-profile">
+    <form method="post">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="profile-img">
+            <img src="./../../assets/imageUser/{{removeFakePath(pro.pathPhoto)}}" alt="" />
+            <div class="file btn btn-lg btn-primary">
+              Change Photo
+              <input type="file" name="file" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="profile-head" *ngFor="let cord of profilecord">
+            <h3>
+              {{pro.name}}
+            </h3>
+            <h6>
+              {{pro.email}}
+            </h6>
+            <p class="proile-rating"><span>{{pro.phone}}</span></p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                  aria-selected="true">Description</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+
+            <input style="margin-bottom: 20px;" (click)="logOut()" type="submit" class="profile-edit-btn" name="btnAddMore" value="Logout" />
+
+            <input style="margin-bottom: 20px;" type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
+            <input routerLink="/test" routerLinkActive="active" type="submit" class="profile-edit-btn" name="btnAddMore" value="Consultant" />
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+
+          <div class="profile-work">
+            <p class="proile-rating"><span>Links</span></p>
+            <div *ngFor="let link of pro.socialLinks">
+              <a href="http://{{link.facebook}}"><img style="width: 35px; margin-right: 10px;" src="./../../assets/images/facebook.png"></a>
+              <a href="http://{{link.twitter}}"><img style="width: 35px; margin-right: 10px;" src="./../../assets/images/twitter.png"></a>
+              <a href="http://{{link.linkedin}}"><img style="width: 35px;" src="./../../assets/images/linkedin.png"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="tab-content profile-tab" id="myTabContent" >
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" >
+              <div>
+              <div class="row" >
+                <div class="col-md-6">
+                  <p>{{pro.description}}</p>
+                </div>
+              </div>
+
+            </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+
+    </form>
+  </div>
+</section>
