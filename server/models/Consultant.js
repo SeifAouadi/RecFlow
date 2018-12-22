@@ -4,6 +4,8 @@ var consultantSchema = mongoose.Schema({
   UserId :  { type: mongoose.Schema.Types.ObjectId, ref: 'Condidats' },
   role: String,
   dureeExprience: Number,
+
+  domaine: String,
   experience: [{
     societe: String,
     debut: Date,
@@ -20,5 +22,6 @@ var consultantSchema = mongoose.Schema({
    phone : Number,
    adresse: String,
    imagePath: String,
+
 })
  module.exports= consultantSchema;

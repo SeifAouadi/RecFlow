@@ -12,7 +12,8 @@ import { SliderComponent } from './slider/slider.component';
 import { ConsultantComponent } from './consultant/consultant.component';
 import { HomeComponent } from './home/home.component';
 import { CompanyComponent } from './company/company.component';
-import { Control } from './control' ;
+import { Control } from './control';
+import { TestComponent } from './test/test.component' ;
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { Control } from './control' ;
     SliderComponent,
     ConsultantComponent,
     HomeComponent,
-    CompanyComponent
+    CompanyComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,18 @@
-<form class="form-group" [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
 
+<form class="form-group" [formGroup]="consultant" *ngIf="consultant" ngSubmit="form(consultant)">
+    <h1 class="text-center">Domaine</h1>
+    <mat-form-field>
+        <mat-select  formControlName="selected">
+          <mat-option>None</mat-option>
+          <mat-option value="Finance">Finance</mat-option>
+          <mat-option value="Information technologie">Information technologie</mat-option>
+          <mat-option value="Marketing">Marketing</mat-option>
+          <mat-option value="Humain Ressources">Humain Ressources</mat-option>
+          <mat-option value="Administration">Administration</mat-option>
+        </mat-select>
+      </mat-form-field>
   <h1 style="border-bottom:5px solid#0f867fdb" class="text-center">Experience</h1>
-  <div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
+   <div formArrayName="experience" *ngFor="let exp of consultant.get('experience').controls; let i = index;">
 
     <div class="row" [formGroupName]="i">
       <div class="col-md-6">
@@ -123,10 +134,10 @@
   <div class="text-center">
     <h2>Photo de profil</h2>
     <label class="btn btn-default btn-file">
-      Browse <input type="file" style="display: none;" formControlName="imageUser" (change)="filechangeEvent($event)">
+      Browse <input accept="image/x-png,image/gif,image/jpeg" type="file" style="display: none;" formControlName="imageUser" (change)="filechangeEvent($event)">
     </label>
   </div>
   <div class="text-center">
-    <button class="btn btn-info btn btn-login float-right" type="button" [disabled]="!consultant.valid" (click)="form(consultant);uploadFile()">Submit</button>
+    <button class="btn btn-info btn btn-login float-right" type="button" [disabled]="!consultant.valid"  (click)="form(consultant);uploadFile()">Submit</button>
   </div>
 </form>

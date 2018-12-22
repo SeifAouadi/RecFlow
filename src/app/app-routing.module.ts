@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { ConsultantComponent } from './consultant/consultant.component';
 import { CompanyComponent } from './company/company.component';
 import {HomeComponent} from './home/home.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'test',
+    component: TestComponent
   }
 ];
 

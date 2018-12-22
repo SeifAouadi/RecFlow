@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var Consultant = require('./models/Consultant');
 var ConsultantModel = mongoose.model('consultant', Consultant);
-var multer  = require('multer')
+var multer = require('multer');
+var jwt = require('jsonwebtoken');
 const port = process.env.port || 3000;
 var Candidat = require('./models/Candidat');
+var CandidatModel = mongoose.model('candidat', Candidat);
 var Company = require('./models/Company');
 var Companymodel = mongoose.model('company', Company);
 const bcrypt = require('bcrypt');
@@ -16,10 +18,10 @@ var form = new IncomingForm();
 const app = express();
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, './imageUser/')
+    cb(null, './imageUser/')
   },
   filename: function (req, file, cb) {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
   }
 });
 
@@ -39,13 +41,13 @@ mongoose.connect('mongodb://localhost:27017/rfDB', {
 app.use(cors());
 app.use(bodyParser.json());
 
- app.post('/upload', upload.single('file'), function (req, res, next) {
-res.send(req.file)
-  });
+app.post('/upload', upload.single('file'), function (req, res, next) {
+  res.send(req.file)
+});
 
-app.post('/consultant' , async (req,res) => {
- var consultant = new ConsultantModel(req.body);
- console.log(consultant);
+app.post('/consultant', async (req, res) => {
+  var consultant = new ConsultantModel(req.body);
+  console.log(consultant);
 
   consultant.save();
   (error) => {
@@ -56,10 +58,10 @@ app.post('/consultant' , async (req,res) => {
 });
 
 app.post('/register', async (req, res) => {
-  var candidat = new Candidat();
+  var candidat = new CandidatModel();
   candidat.firstname = req.body.firstnameValue;
   candidat.lastname = req.body.lastnameValue;
-  resultRegister = await Candidat.findOne({ email: req.body.email });
+  resultRegister = await CandidatModel.findOne({ email: req.body.email });
   if (!resultRegister) {
     candidat.email = req.body.emailValue;
     req.body.password = bcrypt.hashSync(req.body.passwordValue, 10);
@@ -92,30 +94,32 @@ function handleValidationError(err, body) {
   }
 }
 app.post('/login', async (req, res) => {
-  resultLogin = await Candidat.findOne({ email: req.body.email });
+  resultLogin = await CandidatModel.findOne({ email: req.body.email });
   if (!resultLogin) {
     res.send({ message: 'user not found' });
   }
   if (!bcrypt.compareSync(req.body.password, resultLogin.password)) {
     res.send({ message: 'bad password' })
   }
-  else { res.send({ message: 'ok', Token : jwt.sign({data:resultLogin},'my_secreeeet')})
-  jwt.verify() }
-
+  else {
+    res.send({ message: 'ok', Token: jwt.sign({ data: resultLogin }, 'my_secreeeet') })
+    jwt.verify()
+  }
+  /*const token = jwt.sign({ data: resultLogin }, 'secret_code')};*/
 });
-
 app.post('/company', async (req, res) => {
   var company = new Companymodel(req.body);
-  company.save((err, doc) => {
+  console.log(company._id);
+  company.create((err, doc) => {
     if (!err) {
       res.send({ success: "Your company is successfully added", status: 200 });
     } else {
       console.log("there is an error while adding company in DB:" + err);
       res.send(err);
-
     }
-
   })
+
+
 });
 app.get('/company/:id', async (req, res) => {
   Companymodel.find({ comp: req.params.id }).populate('condidats').then(result => {
@@ -126,6 +130,14 @@ app.get('/consultant/:id', async (req, res) => {
   ConsultantModel.find({ UserId: req.params.id }).populate('condidats').then(result => {
     res.send(result);
   })
+});
+app.get('/condidat/:id', async (req, res) => {
+  const candidat = await CandidatModel.findById({ _id: req.params.id })
+  res.send(candidat);
+})
+app.get('/consultant', async (req, res) => {
+  const consultant = await ConsultantModel.find(req.body)
+  res.send(consultant)
 });
 
 

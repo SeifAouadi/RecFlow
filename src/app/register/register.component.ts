@@ -34,6 +34,7 @@ export class RegisterComponent implements OnInit {
     // stop here if form is invalid
     if (this.registerForm.valid) {
       this.apiService.registerApi(this.registerForm.value).subscribe(res => {
+        console.log(res);
       });
 
     }

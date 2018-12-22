@@ -12,6 +12,7 @@ import { COMMON_DEPRECATED_I18N_PIPES } from '@angular/common/src/pipes/deprecat
 export class CompanyComponent implements OnInit {
   company: FormGroup;
   test: any;
+  Token;
   fileUpload: Array<File> = [];
   constructor(public apiService: ApiService, public fb: FormBuilder) {
     this.company = this.fb.group({
@@ -29,11 +30,12 @@ export class CompanyComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.Token = this.apiService.decodetoken();
   }
   formCompany(f) {
     if (f.valid) {
       this.test = {
+        comp: this.Token.data._id,
         role: 'company',
         Nom: f.value.Nom,
         email: f.value.email,

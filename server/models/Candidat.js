@@ -17,6 +17,12 @@ var candidatSchema = mongoose.Schema({
   password : {
     type: String,
     required: 'you must enter password'
+  },
+  company : {
+    type : mongoose.Schema.Types.ObjectId, ref : 'Companies'
+  },
+  consultant : {
+    type : mongoose.Schema.Types.ObjectId, ref : 'Consultants'
   }
 });
 
@@ -26,4 +32,4 @@ candidatSchema.path('email').validate( (val)=> {
   return emailRegex.test(val);
 }, 'Valid E-mail please.');
 
-var Candidat = module.exports =mongoose.model('Candidat',candidatSchema);
+ module.exports= candidatSchema;
