@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   password;
   message;
   imageUser: File = null;
-  constructor(  public router: Router, public apiService: ApiService ) {  }
+  company;
+  constructor(public router: Router, public apiService: ApiService) { }
   ngOnInit() {
   }
   loginBtn() {
@@ -25,27 +26,24 @@ export class LoginComponent implements OnInit {
     this.message = '';
     this.apiService.loginApi(myObj).subscribe(res => {
       console.log('response', res);
-       if (res['message'] === 'ok') {
+      if (res['message'] === 'ok') {
         console.log(res['Token']);
         localStorage.setItem('token', res['Token']);
         this.token = this.apiService.decodetoken();
-        this.iduser = this.token.data._id;
-         this.apiService.getCompany(this.iduser).subscribe(data => {
-          if (data[0].comp === this.iduser) {
-           /* this.router.navigateByUrl('test');*/
-           console.log(data[0].comp);
-          }
-         });
-         this.apiService.getFormConsultant(this.iduser).subscribe(data => {
-           if (data[0].UserId === this.iduser) {
-             console.log('qsdqsdqsdqs', data[0].UserId);
-           }
-         });
-         /*this.router.navigateByUrl('/home');*/
-       } else {
-         this.message = res['message'];
-         console.log(this.message);
-       }
+        if (this.token['data'].comp) {
+          this.router.navigateByUrl('/test');
+        }
+        if (this.token['data'].cansul) {
+          this.router.navigateByUrl('/profile');
+        }
+        if (!this.token['data'].comp && !this.token['data'].cansul) {
+          this.router.navigateByUrl('/home');
+        }
+      } else {
+        this.message = res['message'];
+        alert(this.message);
+      }
     });
   }
 }
+

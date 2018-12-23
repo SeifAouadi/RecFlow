@@ -7,6 +7,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatChipInputEvent } from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { throwIfEmpty } from 'rxjs/operators';
+import {  Router } from '@angular/router';
+import * as jwt_decode from 'jwt-decode';
 @Component({
   selector: 'app-consultant',
   templateUrl: './consultant.component.html',
@@ -33,19 +35,21 @@ export class ConsultantComponent implements OnInit {
   dureeExperience;
   phone;
   adresse;
-  constructor(public apiService: ApiService) {
+  constructor(public apiService: ApiService, public router: Router) {
     this.consultant = new FormGroup({
       selected : new FormControl('', [Validators.required]),
       experience: new FormArray([this.createExp()]),
       formation: new FormArray([this.createFormation()]),
       phone: new FormControl('', [Validators.required,  Validators.minLength(8), Validators.maxLength(8)]),
-      adresse: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
+      adresse: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(14)]),
       imageUser: new FormControl('', [Validators.required, Validators.minLength(3)])
     });
   }
 
   ngOnInit() {
     this.Token = this.apiService.decodetoken();
+    console.log(this.Token);
+    /*this.guard();*/
   }
   deleteRow2(index: number) {
     const control = <FormArray>this.consultant.controls['formation'];
@@ -63,9 +67,10 @@ export class ConsultantComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
+      if (this.fruits.length < 15) {
       this.fruits.push({ name: value.trim() });
       this.skills.push(value);
-      console.log(this.skills);
+      }
     }
 
     // Reset the input value
@@ -85,16 +90,16 @@ export class ConsultantComponent implements OnInit {
 
   createExp(): FormGroup {
     return new FormGroup({
-      societe: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
+      societe: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(14)]),
       debut: new FormControl('', [Validators.required]),
       fin: new FormControl('', [Validators.required]),
-      tacheRealises: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
+      tacheRealises: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(14)]),
     });
   }
   createFormation(): FormGroup {
     return new FormGroup({
-      institut: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
-      diplome: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
+      institut: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(14)]),
+      diplome: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(14)]),
       debutF: new FormControl('', [Validators.required]),
       finF: new FormControl('', [Validators.required])
     });
@@ -102,13 +107,16 @@ export class ConsultantComponent implements OnInit {
   }
   addExp(): void {
     this.experience = this.consultant.get('experience') as FormArray;
+    if (this.experience.length < 5) {
     this.experience.push(this.createExp());
-
+    }
 
   }
   addFormation(): void {
     this.formation = this.consultant.get('formation') as FormArray;
+    if (this.formation.length < 5) {
     this.formation.push(this.createFormation());
+    }
   }
   form(f) {
    if (f.valid) {
@@ -121,12 +129,15 @@ export class ConsultantComponent implements OnInit {
         adresse: f.value.adresse,
         skill: this.skills,
         imagePath: f.value.imageUser,
-        UserId: this.Token.data._id
+        user: this.Token.data._id
       };
       console.log(this.test);
-      this.apiService.formConsultant(this.test).subscribe(res => {
+      this.apiService.formConsultant(this.test, this.Token.data._id).subscribe(res => {
         console.log(res);
-      });
+        localStorage.clear();
+        localStorage.setItem('token', res['Token']);
+        });
+        this.router.navigateByUrl('/profile');
     }
     }
 
@@ -151,6 +162,18 @@ export class ConsultantComponent implements OnInit {
       // tslint:disable-next-line:no-unused-expression
       return a.invalid;
       }
+  }
+  guard() {
+    this.Token = this.apiService.decodetoken();
+    if (this.Token) {
+      if (this.Token['data'].cansul) {
+        this.router.navigateByUrl('/profile');
+      } else if (this.Token['data'].comp) {
+        this.router.navigateByUrl('/test');
+      }
+    } else {
+      this.router.navigateByUrl('/login');
+    }
   }
 
 

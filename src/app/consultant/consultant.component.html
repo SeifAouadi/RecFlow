@@ -17,14 +17,14 @@
     <div class="row" [formGroupName]="i">
       <div class="col-md-6">
         <h2>Societe</h2>
-        <input class="form-control" [ngClass]="{ 'is-invalid': exp.get('societe').touched && exp.get('societe').invalid}"
+        <input maxLength="14" class="form-control" [ngClass]="{ 'is-invalid': exp.get('societe').touched && exp.get('societe').invalid}"
           formControlName="societe" type="text" placeholder="Societe">
 
         <div class="invalid-feedback">required</div>
       </div>
       <div class="col-md-6">
         <h2>Poste</h2>
-        <input class="form-control" [ngClass]="{ 'is-invalid': exp.get('tacheRealises').touched && exp.get('tacheRealises').invalid}"
+        <input maxLength="14" class="form-control" [ngClass]="{ 'is-invalid': exp.get('tacheRealises').touched && exp.get('tacheRealises').invalid}"
           formControlName="tacheRealises" type="text" placeholder="tacheRealiser">
         <div class="invalid-feedback">required</div>
       </div>
@@ -66,13 +66,13 @@
     <div class="row" [formGroupName]="i">
       <div class="col-md-6">
         <h2>Institut</h2>
-        <input type="text" [ngClass]="{ 'is-invalid': for.get('institut').touched && for.get('institut').invalid}"
+        <input maxLength="14" type="text" [ngClass]="{ 'is-invalid': for.get('institut').touched && for.get('institut').invalid}"
           formControlName="institut" placeholder="Institut" class="form-control">
         <div class="invalid-feedback">required</div>
       </div>
       <div class="col-md-6">
         <h2>Diplome</h2>
-        <input type="text" [ngClass]="{ 'is-invalid': for.get('diplome').touched && for.get('diplome').invalid}"
+        <input maxLength="14" type="text" [ngClass]="{ 'is-invalid': for.get('diplome').touched && for.get('diplome').invalid}"
           formControlName="diplome" placeholder="Diplome" class="form-control">
         <div class="invalid-feedback">required</div>
       </div>
@@ -108,13 +108,13 @@
   <div class="row">
     <div class="col-md-6">
       <h2>Phone</h2>
-      <input [ngClass]="{ 'is-invalid': consultant.get('phone').touched && consultant.get('phone').invalid}" class="form-control"
-        type="tel" placeholder="Phone" formControlName="phone">
+      <input  [ngClass]="{ 'is-invalid': consultant.get('phone').touched && consultant.get('phone').invalid}" class="form-control"
+        type="number" placeholder="Phone" formControlName="phone">
       <div class="invalid-feedback">required</div>
     </div>
     <div class="col-md-6">
       <h2>Adresse</h2>
-      <input class="form-control" [ngClass]="{ 'is-invalid': consultant.get('adresse').touched && consultant.get('adresse').invalid}"
+      <input maxLength="14" class="form-control" [ngClass]="{ 'is-invalid': consultant.get('adresse').touched && consultant.get('adresse').invalid}"
         type="text" placeholder="Adresse" formControlName="adresse">
       <div class="invalid-feedback">required</div>
     </div>

@@ -22,6 +22,6 @@ var consultantSchema = mongoose.Schema({
    phone : Number,
    adresse: String,
    imagePath: String,
-
+   user: { type: mongoose.Schema.Types.ObjectId, ref:'Candidats'}
 })
  module.exports= consultantSchema;

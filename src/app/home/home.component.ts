@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
   import { from } from 'rxjs';
+  import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,24 @@ import { ApiService } from '../api.service';
 export class HomeComponent implements OnInit {
   toke;
 
-  constructor(public apiService: ApiService) { }
+  constructor(public apiService: ApiService, public router: Router) { }
 
   ngOnInit() {
-this.toke = this.apiService.decodetoken();
-console.log(this.toke);
+this.guard();
+
+  }
+  guard() {
+    this.toke = this.apiService.decodetoken();
+    if (this.toke) {
+      
+      if (this.toke['data'].comp) {
+        this.router.navigateByUrl('/test');
+      } else if (this.toke['data'].cansul) {
+        this.router.navigateByUrl('/profile');
+      }
+    } else {
+      this.router.navigateByUrl('/login');
+    }
   }
 
 }
