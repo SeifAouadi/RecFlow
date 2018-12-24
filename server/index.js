@@ -122,7 +122,8 @@ app.post('/company/:id', async (req, res) => {
   } else {
     const camp = await Companymodel.create(req.body);
     const cand = await CandidatModel.findByIdAndUpdate(req.params.id, {$set: {comp : camp._id}})
-    res.send(cand);
+    const candnew = await CandidatModel.findOne({_id : req.params.id})
+    res.send({Token : jwt.sign({ data: candnew}, 'my_secreeeet')})
   }
 
   });
